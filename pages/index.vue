@@ -4,7 +4,7 @@
         <div class="text-white">
             <div class="flex items-center gap-3 flex-1">
                 <font-awesome-icon :icon="['fas','sun']"/>
-                <p class="text-2xl">The Local Weather</p>
+                <p class="text-2xl">{{ weather.city }}</p>
             </div>
         </div>
     </div>
@@ -17,6 +17,26 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 export default {
     name: "index",
     components: {FontAwesomeIcon},
+    data() {
+        return {
+            weather: {
+                city: 'Salvador',
+                country: 'BA',
+                temperature: 12,
+                description: 'Nuvens por todo lugar',
+                lowTemp: '19',
+                highTemp: '30',
+                feelsLike: '20',
+                humidity: '55'
+            },
+            weatherRoute: 'http://api.weatherapi.com/v1'
+        }
+    },
+    methods: {
+        getWeather() {
+            const baseURL = `${this.weatherRoute + '/current.json'}`
+        }
+    },
 };
 </script>
 
