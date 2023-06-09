@@ -13,6 +13,13 @@
         </div>
 
 
+        <div>
+            <ul class="divide-y divide-[#F3F3F3] p-2">
+                <li class="py-2">Dia 1</li>
+                <li class="py-2">Dia 2</li>
+                <li class="py-2">Dia 3</li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -54,7 +61,11 @@ export default {
                 await axios.get(`${this.weatherBaseRoute}/current.json`, {
                     params: {
                         key: this.weatherKey,
-                        q: `${latitude},${longitude}` // Adicione as coordenadas lat e long como parâmetros, se necessário
+                        q: `${latitude},${longitude}`,
+                        days: 7,
+                        aqi: 'yes',
+                        alerts: 'yes'
+                        // dt: '2023-07-09',
                     }
                 }).then((response) => {
                     this.weather.city = response.data.location.name
@@ -62,7 +73,7 @@ export default {
                     this.weather.condition = response.data.current.condition.text
                     this.weather.temp_c = response.data.current.temp_c
                     this.show = true
-                    console.log(response.data.current);
+                    console.log(response.data);
                 })
             } catch (error) {
                 console.error(error);
