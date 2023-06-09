@@ -1,12 +1,18 @@
 <template>
-    <div class="flex flex-col min-h-screen bg-[#0E1A2A]">
-        <header class="sticky top-0 bg-21394F"></header>
-        <div class="text-white">
-            <div class="flex items-center gap-3 flex-1">
-                <font-awesome-icon :icon="['fas','sun']"/>
-                <p class="text-2xl">{{ weather.city }}</p>
+    <div v-if="show"
+         class="flex flex-col h-screen min-h-screen bg-gradient-to-r from-[#0E1A2A] to-[#21394F] text-[#F3F3F3]">
+        <div class="h-1/2 flex flex-col items-center justify-center">
+            <div class="text-center mt-12 items-center space-y-12">
+                <font-awesome-icon :icon="['fas','cloud-sun']" class="text-7xl" bounce/>
+                <p class="text-4xl font-bold">{{ weather.city }}</p>
+            </div>
+            <div class="text-center space-y-2 mt-4">
+                <p class="text-5xl font-bold">{{ `${weather.temp_c}º` }}</p>
+                <p class="text-2xl text-gray-400">{{ weather.condition }}</p>
             </div>
         </div>
+
+
     </div>
 </template>
 
@@ -20,12 +26,13 @@ export default {
     components: {FontAwesomeIcon},
     data() {
         return {
+            show: false,
             weather: {},
             weatherBaseRoute: 'https://api.weatherapi.com/v1',
             weatherKey: '953c9a5eae1041bca6b195920230806'
         }
     },
-    mounted() {
+    created() {
         this.getCurrentLocation();
     },
     methods: {
@@ -52,7 +59,10 @@ export default {
                 }).then((response) => {
                     this.weather.city = response.data.location.name
                     this.weather.country = response.data.location.country
-                    console.log(response.data.location);
+                    this.weather.condition = response.data.current.condition.text
+                    this.weather.temp_c = response.data.current.temp_c
+                    this.show = true
+                    console.log(response.data.current);
                 })
             } catch (error) {
                 console.error(error);
