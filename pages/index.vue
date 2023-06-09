@@ -13,28 +13,50 @@
 <script>
 
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import axios from "axios";
 
 export default {
     name: "index",
     components: {FontAwesomeIcon},
     data() {
         return {
-            weather: {
-                city: 'Salvador',
-                country: 'BA',
-                temperature: 12,
-                description: 'Nuvens por todo lugar',
-                lowTemp: '19',
-                highTemp: '30',
-                feelsLike: '20',
-                humidity: '55'
-            },
-            weatherRoute: 'http://api.weatherapi.com/v1'
+            weather: {},
+            weatherBaseRoute: 'https://api.weatherapi.com/v1',
+            weatherKey: '953c9a5eae1041bca6b195920230806'
         }
     },
+    mounted() {
+        this.getCurrentLocation();
+    },
     methods: {
-        getWeather() {
-            const baseURL = `${this.weatherRoute + '/current.json'}`
+        async getCurrentLocation() {
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+
+                const {latitude, longitude} = position.coords;
+                await this.getWeather(latitude, longitude);
+            } catch (error) {
+                console.error('Erro ao obter a localização:', error);
+            }
+        },
+
+        async getWeather(latitude, longitude) {
+            try {
+                await axios.get(`${this.weatherBaseRoute}/current.json`, {
+                    params: {
+                        key: this.weatherKey,
+                        q: `${latitude},${longitude}` // Adicione as coordenadas lat e long como parâmetros, se necessário
+                    }
+                }).then((response) => {
+                    this.weather.city = response.data.location.name
+                    this.weather.country = response.data.location.country
+                    console.log(response.data.location);
+                })
+            } catch (error) {
+                console.error(error);
+            }
         }
     },
 };

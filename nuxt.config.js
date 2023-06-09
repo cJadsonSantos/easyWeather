@@ -26,6 +26,7 @@ export default defineNuxtConfig({
         "@nuxtjs/eslint-module",
         '@nuxtjs/fontawesome'
     ],
+
     fontawesome: {
         component: 'fa',
         icons: {
@@ -33,6 +34,7 @@ export default defineNuxtConfig({
             brands: true
         }
     },
+
     build: {
         postcss: {
             postcssOptions: {
@@ -43,17 +45,20 @@ export default defineNuxtConfig({
             }
         }
     },
+
     css: [
         "~/assets/css/tailwind.css",
         '@fortawesome/fontawesome-svg-core/styles.css'
     ],
+
     alias: {
         "@": resolve(__dirname, "/")
     },
+
     devtools: {enabled: true},
     modules: [
         // ...
         "@nuxtjs/tailwindcss",
         "@pinia/nuxt"
-    ],
+    ]
 });
