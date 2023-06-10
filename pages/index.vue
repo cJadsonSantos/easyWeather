@@ -17,7 +17,7 @@
                     type="text"
                     v-model="city"
                     placeholder="Search City.."
-                    class="mt-4 px-4 py-2 border border-none rounded-full bg-[#0E1A2A] text-[#F3F3F3]"
+                    class="mt-4 px-8 py-2 border border-none rounded-full bg-[#0E1A2A] text-[#F3F3F3]"
                     @input="searchWeather"
             />
 
