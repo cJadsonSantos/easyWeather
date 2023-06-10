@@ -1,7 +1,7 @@
 <template>
     <div v-if="show"
          class="flex flex-col h-screen w-screen min-h-screen bg-gradient-to-r from-[#0E1A2A] to-[#21394F] text-[#F3F3F3] overflow-hidden sm:h-screen">
-        <div class="flex flex-col items-center justify-center">
+        <div class="flex flex-col items-center justify-center  h-full">
 
             <div class="text-center mt-12 items-center space-y-12">
                 <font-awesome-icon :icon="['fas','cloud-sun']" class="text-7xl" bounce/>
