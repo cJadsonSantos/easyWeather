@@ -1,7 +1,7 @@
 <template>
     <div v-if="show"
          class="flex flex-col h-screen min-h-screen bg-gradient-to-r from-[#0E1A2A] to-[#21394F] text-[#F3F3F3]">
-        <div class="h-1/2 flex flex-col items-center justify-center">
+        <div class="flex flex-col items-center justify-center">
 
             <div class="text-center mt-12 items-center space-y-12">
                 <font-awesome-icon :icon="['fas','cloud-sun']" class="text-7xl" bounce/>
@@ -21,12 +21,14 @@
                     @input="searchWeather"
             />
 
-            <div class="flex flex-wrap w-80 space-x-2 space-y-2 mt-4">
+            <div class="flex flex-wrap max-w-full px-24 mt-8 gap-4">
                 <template v-for="day in currencyDayForecastHour" :key="day.id">
-                    <font-awesome-icon :icon="['fas','cloud']" class="text-1xl p-2" fade/>
-                    <div class="ml-3 text-left text-xs">
-                        <p>{{ day.time.slice(11, 16) }}</p>
-                        <p>{{ `${day.temp_c}º` }}</p>
+                    <div class="flex flex-col items-center justify-center">
+                        <font-awesome-icon :icon="['fas','cloud']" class="text-1xl" fade/>
+                        <div class="text-left text-xs">
+                            <p>{{ day.time.slice(11, 16) }}</p>
+                            <p>{{ `${day.temp_c}º` }}</p>
+                        </div>
                     </div>
                 </template>
             </div>
