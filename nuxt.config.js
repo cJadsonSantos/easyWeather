@@ -26,7 +26,9 @@ export default defineNuxtConfig({
         "@nuxtjs/eslint-module",
         '@nuxtjs/fontawesome'
     ],
-
+    tailwindcss: {
+        darkMode: 'class'
+    },
     fontawesome: {
         component: 'fa',
         icons: {

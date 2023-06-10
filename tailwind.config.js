@@ -1,4 +1,10 @@
 module.exports = {
+    darkMode: 'class',
+
+    variants: {
+        extend: {},
+    },
+
     content: [
         "./components/**/*.{js,vue,ts}",
         "./layouts/**/*.vue",
