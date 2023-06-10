@@ -20,16 +20,18 @@
                     class="mt-4 px-12 py-2 border border-none rounded-full bg-[#0E1A2A] text-[#F3F3F3]"
                     @input="searchWeather"
             />
-            <div class="flex flex-wrap max-w-full justify-center px-20 mt-8 gap-4">
-                <template v-for="day in currencyDayForecastHour" :key="day.id">
-                    <div class="flex flex-col items-center justify-center">
-                        <font-awesome-icon :icon="['fas','cloud']" class="text-1xl" fade/>
-                        <div class="text-left text-xs">
-                            <p>{{ day.time.slice(11, 16) }}</p>
-                            <p>{{ `${day.temp_c}º` }}</p>
+            <div class="flex flex-wrap max-w-full px-8 mt-8">
+                <div class="flex overflow-x-auto">
+                    <template v-for="day in currencyDayForecastHour" :key="day.id">
+                        <div class="flex flex-col items-center justify-center ml-4">
+                            <font-awesome-icon :icon="['fas','cloud']" class="text-1xl" fade/>
+                            <div class="text-left text-xs">
+                                <p>{{ day.time.slice(11, 16) }}</p>
+                                <p>{{ `${day.temp_c}º` }}</p>
+                            </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </div>
         </div>
     </div>
