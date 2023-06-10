@@ -21,7 +21,7 @@
                     @input="searchWeather"
             />
 
-            <div class="flex flex-wrap max-w-full px-24 mt-8 gap-4">
+            <div class="flex flex-wrap max-w-full px-20 mt-8 gap-4">
                 <template v-for="day in currencyDayForecastHour" :key="day.id">
                     <div class="flex flex-col items-center justify-center">
                         <font-awesome-icon :icon="['fas','cloud']" class="text-1xl" fade/>
