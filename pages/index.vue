@@ -22,9 +22,9 @@
       />
       <div class="flex flex-wrap max-w-full px-8 mt-8">
         <div class="flex overflow-x-auto">
-          <template v-for="day in currencyDayForecastHour" :key="day.id">
+          <template v-for="day in forecastDays[countDays].hour" :key="day.id">
             <div class="flex flex-col items-center justify-center ml-4">
-              <font-awesome-icon :icon="getIcon(day.time.slice(11, 16),day.condition.text)" class="text-1xl" fade />
+              <font-awesome-icon :icon="getIcon(day.condition.text)" class="text-1xl" fade />
               <div class="text-left text-xs">
                 <p>{{ day.time.slice(11, 16) }}</p>
                 <p>{{ `${day.temp_c}º` }}</p>
@@ -33,17 +33,6 @@
           </template>
         </div>
       </div>
-
-      <div class="flex flex-wrap max-w-full px-8 mt-8">
-        <div class="flex overflow-x-auto">
-          <template v-for="day in currencyDayForecastHour" :key="day.id">
-            <div class="flex flex-col items-center justify-center ml-4">
-
-            </div>
-          </template>
-        </div>
-      </div>
-
     </div>
   </div>
 </template>
@@ -60,11 +49,13 @@ export default {
     return {
       show: false,
       weather: {},
-      currencyDayForecastHour: {},
+      forecastDays: {},
 
       city: null,
       currentDate: null,
       iconWeather: null,
+
+      countDays: 0,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
       weatherKey: "953c9a5eae1041bca6b195920230806"
@@ -94,7 +85,7 @@ export default {
           params: {
             key: this.weatherKey,
             q: `${latitude},${longitude}`,
-            days: 7,
+            days: 3,
             aqi: "yes",
             alerts: "yes"
             // dt: '2023-07-09',
@@ -105,9 +96,9 @@ export default {
           this.weather.temp_c = response.data.current.temp_c;
           this.show = true;
 
-          this.currencyDayForecastHour = response.data.forecast.forecastday[0].hour;
+          this.forecastDays = response.data.forecast.forecastday;
           // console.log(response.data.current.condition);
-          // console.log(response.data.forecast);
+          console.log(response.data.forecast.forecastday[0]);
 
           if (response.data.current.condition) {
             this.iconWeather = "cloud-moon";
@@ -140,19 +131,19 @@ export default {
       this.currentDate = `${day}/${month}/${year}`;
     },
 
-    getIcon(time, condition) {
-      if (condition == "Partly cloudy") {
-        return ["fas", "cloud-moon"];
-      } else if (condition == "Sunny") {
-        return ["fas", "sun"];
-      } else if (condition == "Clear") {
-        return ["fas", "moon"];
-      } else if (condition == "Cloudy") {
-        return ["fas", "cloud"];
-      } else if (condition == "Patchy rain possible") {
-        return ["fas", "cloud-moon-rain"];
+    getIcon(condition) {
+      const iconMap = {
+        "Partly cloudy": ["fas", "cloud-moon"],
+        "Sunny": ["fas", "sun"],
+        "Clear": ["fas", "moon"],
+        "Cloudy": ["fas", "cloud"],
+        "Patchy rain possible": ["fas", "cloud-moon-rain"]
+      };
+
+      if (condition in iconMap) {
+        return iconMap[condition];
       } else {
-        console.log("a");
+        console.log("Unknown weather condition:", condition);
       }
     }
   }
