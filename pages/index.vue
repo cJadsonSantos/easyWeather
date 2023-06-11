@@ -85,7 +85,7 @@ export default {
         await axios.get(`${this.weatherBaseRoute}/forecast.json`, {
           params: {
             key: this.weatherKey,
-            q: `${city}}`,
+            q: `${city}`,
             days: 7,
             aqi: "yes",
             alerts: "yes"
