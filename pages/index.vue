@@ -65,27 +65,23 @@ export default {
   methods: {
     async getCurrentLocation() {
       try {
-        const response = await axios.get('https://ip-api.com/json');
-        const data = response.data;
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
 
-        if (data.status === 'success') {
-          const { city } = data;
-          console.log('Cidade:', city);
-          await this.getWeather(city);
-        } else {
-          console.error('Falha ao obter a localização pelo IP');
-        }
+        const { latitude, longitude } = position.coords;
+        await this.getWeather(latitude, longitude);
       } catch (error) {
-        console.error('Erro ao obter a localização:', error);
+        console.error("Erro ao obter a localização:", error);
       }
     },
 
-    async getWeather(city) {
+    async getWeather(latitude, longitude) {
       try {
         await axios.get(`${this.weatherBaseRoute}/forecast.json`, {
           params: {
             key: this.weatherKey,
-            q: `${city}`,
+            q: `${latitude},${longitude}`,
             days: 7,
             aqi: "yes",
             alerts: "yes"
