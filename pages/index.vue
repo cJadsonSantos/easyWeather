@@ -98,7 +98,7 @@ export default {
 
           this.forecastDays = response.data.forecast.forecastday;
           // console.log(response.data.current.condition);
-          console.log(response.data.forecast.forecastday[0]);
+          console.log(response.data.forecast.forecastday[0].date);
 
           if (response.data.current.condition) {
             this.iconWeather = "cloud-moon";
