@@ -65,20 +65,21 @@ export default {
   methods: {
     async getCurrentLocation() {
       try {
-        const response = await axios.get("http://ip-api.com/json");
+        const response = await axios.get('https://ip-api.com/json');
         const data = response.data;
 
-        if (data.status === "success") {
+        if (data.status === 'success') {
           const { city } = data;
-          console.log("Cidade:", city);
+          console.log('Cidade:', city);
           await this.getWeather(city);
         } else {
-          console.error("Falha ao obter a localização pelo IP");
+          console.error('Falha ao obter a localização pelo IP');
         }
       } catch (error) {
-        console.error("Erro ao obter a localização:", error);
+        console.error('Erro ao obter a localização:', error);
       }
     },
+
     async getWeather(city) {
       try {
         await axios.get(`${this.weatherBaseRoute}/forecast.json`, {
