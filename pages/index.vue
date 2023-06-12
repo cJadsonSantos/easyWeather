@@ -68,8 +68,7 @@ export default {
       countDays: 0,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "953c9a5eae1041bca6b195920230806",
-      geolocationDBKey: "f2e84010-e1e9-11ed-b2f8-6b70106be3c8"
+      weatherKey: "953c9a5eae1041bca6b195920230806"
     };
   },
   created() {
@@ -77,26 +76,40 @@ export default {
     this.getCurrentDate();
   },
   methods: {
+    // async getCurrentLocation() {
+    //   try {
+    //     const position = await new Promise((resolve, reject) => {
+    //       navigator.geolocation.getCurrentPosition(resolve, reject);
+    //     });
+    //
+    //     const { latitude, longitude } = position.coords;
+    //     await this.getWeather(latitude, longitude);
+    //   } catch (error) {
+    //     console.error("Erro ao obter a localização:", error);
+    //   }
+    // },
+
     async getCurrentLocation() {
       try {
-        const response = await axios.get(
-          `https://geolocation-db.com/json/${this.geolocationDBKey}`
-        );
-        const { latitude, longitude } = response.data;
+        // Obter o endereço IP usando o serviço "ipify"
+        const response = await axios.get("https://api.ipify.org?format=json");
+        const ipAddress = response.data.ip;
 
-        await this.getWeather(latitude, longitude);
+        // Chame a função para obter o clima com base no endereço IP
+        await this.getWeather(ipAddress);
       } catch (error) {
         console.error("Erro ao obter a localização:", error);
       }
     },
 
-    async getWeather(latitude, longitude) {
+
+    async getWeather(ipAddress) {
       try {
         await axios
           .get(`${this.weatherBaseRoute}/forecast.json`, {
             params: {
               key: this.weatherKey,
-              q: `${latitude},${longitude}`,
+              q: ipAddress,
               days: 3,
               aqi: "yes",
               alerts: "yes"
@@ -172,5 +185,3 @@ export default {
   }
 };
 </script>
-
-<style scoped></style>
