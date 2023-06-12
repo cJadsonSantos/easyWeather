@@ -87,7 +87,6 @@ export default {
       }
     },
 
-
     async getWeather(latitude, longitude) {
       try {
         await axios
