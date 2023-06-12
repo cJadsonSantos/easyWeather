@@ -76,26 +76,11 @@ export default {
     this.getCurrentDate();
   },
   methods: {
-    // async getCurrentLocation() {
-    //   try {
-    //     const position = await new Promise((resolve, reject) => {
-    //       navigator.geolocation.getCurrentPosition(resolve, reject);
-    //     });
-    //
-    //     const { latitude, longitude } = position.coords;
-    //     await this.getWeather(latitude, longitude);
-    //   } catch (error) {
-    //     console.error("Erro ao obter a localização:", error);
-    //   }
-    // },
-
     async getCurrentLocation() {
       try {
-        // Obter o endereço IP usando o serviço "ipify"
         const response = await axios.get("https://api.ipify.org?format=json");
         const ipAddress = response.data.ip;
 
-        // Chame a função para obter o clima com base no endereço IP
         await this.getWeather(ipAddress);
       } catch (error) {
         console.error("Erro ao obter a localização:", error);
@@ -145,7 +130,6 @@ export default {
           this.weather.condition = response.data.current.condition.text;
           this.weather.temp_c = response.data.current.temp_c;
           // this.forecastDays = response.data.forecast.forecastday;
-          console.log(response.data);
         });
     },
 
@@ -163,7 +147,9 @@ export default {
         "Sunny": ["fas", "sun"],
         "Clear": ["fas", "moon"],
         "Cloudy": ["fas", "cloud"],
-        "Patchy rain possible": ["fas", "cloud-moon-rain"]
+        "Patchy rain possible": ["fas", "cloud-moon-rain"],
+        "Light rain shower": ["fas", "cloud-moon-rain"],
+        "Moderate or heavy rain shower": ["fas", "cloud-moon-rain"]
       };
 
       if (condition in iconMap) {
