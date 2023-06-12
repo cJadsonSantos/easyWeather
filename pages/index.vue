@@ -34,11 +34,15 @@
         </div>
       </div>
     </div>
+
+    <div class="flex justify-center mt-4">
+      <button class="mr-2" @click="changeDate(-1)">Dia Anterior</button>
+      <button class="ml-2" @click="changeDate(1)">Próximo Dia</button>
+    </div>
   </div>
 </template>
 
 <script>
-
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import axios from "axios";
 
@@ -81,46 +85,47 @@ export default {
 
     async getWeather(latitude, longitude) {
       try {
-        await axios.get(`${this.weatherBaseRoute}/forecast.json`, {
-          params: {
-            key: this.weatherKey,
-            q: `${latitude},${longitude}`,
-            days: 3,
-            aqi: "yes",
-            alerts: "yes"
-            // dt: '2023-07-09',
-          }
-        }).then((response) => {
-          this.weather.city = response.data.location.name;
-          this.weather.condition = response.data.current.condition.text;
-          this.weather.temp_c = response.data.current.temp_c;
-          this.show = true;
+        await axios
+          .get(`${this.weatherBaseRoute}/forecast.json`, {
+            params: {
+              key: this.weatherKey,
+              q: `${latitude},${longitude}`,
+              days: 3,
+              aqi: "yes",
+              alerts: "yes"
+            }
+          })
+          .then((response) => {
+            this.weather.city = response.data.location.name;
+            this.weather.condition = response.data.current.condition.text;
+            this.weather.temp_c = response.data.current.temp_c;
+            this.show = true;
 
-          this.forecastDays = response.data.forecast.forecastday;
-          // console.log(response.data.current.condition);
-          console.log(response.data.forecast.forecastday[0].date);
+            this.forecastDays = response.data.forecast.forecastday;
 
-          if (response.data.current.condition) {
-            this.iconWeather = "cloud-moon";
-          }
-        });
+            if (response.data.current.condition) {
+              this.iconWeather = "cloud-moon";
+            }
+          });
       } catch (error) {
         console.error(error);
       }
     },
 
     async searchWeather() {
-      await axios.get(`${this.weatherBaseRoute}/current.json`, {
-        params: {
-          key: this.weatherKey,
-          q: `${this.city}`
-        }
-      }).then(response => {
-        this.weather.city = response.data.location.name;
-        this.weather.condition = response.data.current.condition.text;
-        this.weather.temp_c = response.data.current.temp_c;
-        console.log(response.data);
-      });
+      await axios
+        .get(`${this.weatherBaseRoute}/current.json`, {
+          params: {
+            key: this.weatherKey,
+            q: `${this.city}`
+          }
+        })
+        .then((response) => {
+          this.weather.city = response.data.location.name;
+          this.weather.condition = response.data.current.condition.text;
+          this.weather.temp_c = response.data.current.temp_c;
+          console.log(response.data);
+        });
     },
 
     getCurrentDate() {
@@ -144,6 +149,16 @@ export default {
         return iconMap[condition];
       } else {
         console.log("Unknown weather condition:", condition);
+      }
+    },
+
+    changeDate(days) {
+      this.countDays += days;
+
+      if (this.countDays < 0) {
+        this.countDays = 0;
+      } else if (this.countDays >= this.forecastDays.length) {
+        this.countDays = this.forecastDays.length - 1;
       }
     }
   }
