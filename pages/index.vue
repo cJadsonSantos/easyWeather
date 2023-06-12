@@ -78,23 +78,23 @@ export default {
   methods: {
     async getCurrentLocation() {
       try {
-        const response = await axios.get("https://api.ipify.org?format=json");
-        const ipAddress = response.data.ip;
+        const response = await axios.get("https://ipapi.co/json/");
+        const { latitude, longitude } = response.data;
 
-        await this.getWeather(ipAddress);
+        await this.getWeather(latitude, longitude);
       } catch (error) {
         console.error("Erro ao obter a localização:", error);
       }
     },
 
 
-    async getWeather(ipAddress) {
+    async getWeather(latitude, longitude) {
       try {
         await axios
           .get(`${this.weatherBaseRoute}/forecast.json`, {
             params: {
               key: this.weatherKey,
-              q: ipAddress,
+              q: `${latitude}, ${longitude}`,
               days: 3,
               aqi: "yes",
               alerts: "yes"
