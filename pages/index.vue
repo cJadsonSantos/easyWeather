@@ -78,7 +78,7 @@ export default {
   methods: {
     async getCurrentLocation() {
       try {
-        const response = await axios.get("http://ip-api.com/json");
+        const response = await axios.get("https://ip-api.com/json");
         const { lat, lon } = response.data;
 
         await this.getWeather(lat, lon);
