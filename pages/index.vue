@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div class="flex justify-center mt-8 space-x-8">
+    <div class="flex justify-center mt-8 space-x-8 text-sm font-bold">
       <span @click="changeDate(-1)" class="cursor-pointer flex items-center justify-center">
         <font-awesome-icon :icon="['fas','caret-left']" class="text-2xl mr-2" beat />
         Previous Day
@@ -78,12 +78,10 @@ export default {
   methods: {
     async getCurrentLocation() {
       try {
-        const position = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
+        const response = await axios.get("http://ip-api.com/json");
+        const { lat, lon } = response.data;
 
-        const { latitude, longitude } = position.coords;
-        await this.getWeather(latitude, longitude);
+        await this.getWeather(lat, lon);
       } catch (error) {
         console.error("Erro ao obter a localização:", error);
       }
@@ -120,7 +118,7 @@ export default {
 
     async searchWeather() {
       await axios
-        .get(`${this.weatherBaseRoute}/current.json`, {
+        .get(`${this.weatherBaseRoute}/forecast.json`, {
           params: {
             key: this.weatherKey,
             q: `${this.city}`
@@ -130,6 +128,7 @@ export default {
           this.weather.city = response.data.location.name;
           this.weather.condition = response.data.current.condition.text;
           this.weather.temp_c = response.data.current.temp_c;
+          // this.forecastDays = response.data.forecast.forecastday;
           console.log(response.data);
         });
     },
