@@ -68,7 +68,8 @@ export default {
       countDays: 0,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "953c9a5eae1041bca6b195920230806"
+      weatherKey: "953c9a5eae1041bca6b195920230806",
+      geolocationDBKey: "f2e84010-e1e9-11ed-b2f8-6b70106be3c8"
     };
   },
   created() {
@@ -78,10 +79,12 @@ export default {
   methods: {
     async getCurrentLocation() {
       try {
-        const response = await axios.get("https://ip-api.com/json");
-        const { lat, lon } = response.data;
+        const response = await axios.get(
+          `https://geolocation-db.com/json/${this.geolocationDBKey}`
+        );
+        const { latitude, longitude } = response.data;
 
-        await this.getWeather(lat, lon);
+        await this.getWeather(latitude, longitude);
       } catch (error) {
         console.error("Erro ao obter a localização:", error);
       }
