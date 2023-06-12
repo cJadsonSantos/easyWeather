@@ -1,7 +1,7 @@
 <template>
   <div v-if="show"
-       class="flex flex-col h-screen w-screen min-h-screen bg-gradient-to-r from-[#0E1A2A] to-[#21394F] text-[#F3F3F3] overflow-scroll sm:h-screen">
-    <div class="flex flex-col items-center justify-center">
+       class="flex flex-col h-screen w-screen min-h-screen bg-gradient-to-r from-[#0E1A2A] to-[#21394F] text-[#F3F3F3] overflow-scroll sm:h-screen sm:w-screen">
+    <div class="flex flex-col items-center h-full w-full justify-center">
 
       <div class="text-center mt-12 items-center space-y-12">
         <font-awesome-icon :icon="['fas',iconWeather]" class="text-7xl" bounce />
