@@ -35,9 +35,15 @@
       </div>
     </div>
 
-    <div class="flex justify-center mt-4">
-      <button class="mr-2" @click="changeDate(-1)">Dia Anterior</button>
-      <button class="ml-2" @click="changeDate(1)">Próximo Dia</button>
+    <div class="flex justify-center mt-8 space-x-8">
+      <span @click="changeDate(-1)" class="cursor-pointer flex items-center justify-center">
+        <font-awesome-icon :icon="['fas','caret-left']" class="text-2xl mr-2" beat />
+        Previous Day
+      </span>
+      <span @click="changeDate(1)" class="cursor-pointer flex items-center justify-center">
+        Next Day
+        <font-awesome-icon :icon="['fas','caret-right']" class="text-2xl ml-2" beat />
+      </span>
     </div>
   </div>
 </template>
