@@ -6,6 +6,9 @@
       <div class="text-center mt-12 items-center space-y-12">
         <font-awesome-icon :icon="['fas',iconWeather]" class="text-7xl" bounce />
         <p class="text-4xl font-bold">{{ weather.city }}</p>
+        <template v-for="day in this.forecastDates">
+          {{ day[countDays].date }}
+        </template>
       </div>
 
       <div class="text-center space-y-2 mt-4">
@@ -60,6 +63,7 @@ export default {
       show: false,
       weather: {},
       forecastDays: {},
+      forecastDates: {},
 
       city: null,
       currentDate: null,
@@ -87,6 +91,7 @@ export default {
       }
     },
 
+
     async getWeather(latitude, longitude) {
       try {
         await axios
@@ -104,6 +109,9 @@ export default {
             this.weather.condition = response.data.current.condition.text;
             this.weather.temp_c = response.data.current.temp_c;
             this.show = true;
+
+            this.forecastDates = response.data.forecast;
+            console.log(response.data.forecast);
 
             this.forecastDays = response.data.forecast.forecastday;
 
