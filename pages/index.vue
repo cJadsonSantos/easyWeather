@@ -1,6 +1,6 @@
 <template>
   <div v-if="show"
-       class="flex flex-col h-screen w-screen min-h-screen bg-gradient-to-r from-[#0E1A2A] to-[#21394F] text-[#F3F3F3] overflow-hidden sm:h-screen">
+       class="flex flex-col h-screen w-screen min-h-screen bg-gradient-to-r from-[#0E1A2A] to-[#21394F] text-[#F3F3F3]">
     <div class="flex flex-col items-center justify-center">
 
       <div class="text-center mt-12 items-center space-y-12">
@@ -27,7 +27,8 @@
         <div class="flex overflow-x-auto">
           <template v-for="day in forecastDays[countDays].hour" :key="day.id">
             <div class="flex flex-col items-center justify-center ml-4">
-              <font-awesome-icon :icon="getIcon(day.condition.text)" class="text-1xl" fade />
+              <font-awesome-icon :icon="getIcon(day.condition.code)" class="text-1xl" fade />
+
               <div class="text-left text-xs">
                 <p>{{ day.time.slice(11, 16) }}</p>
                 <p>{{ `${day.temp_c}º` }}</p>
@@ -100,8 +101,7 @@ export default {
               key: this.weatherKey,
               q: `${latitude}, ${longitude}`,
               days: 3,
-              aqi: "yes",
-              alerts: "yes"
+              lang: "pt"
             }
           })
           .then((response) => {
@@ -150,13 +150,16 @@ export default {
 
     getIcon(condition) {
       const iconMap = {
-        "Partly cloudy": ["fas", "cloud-moon"],
-        "Sunny": ["fas", "sun"],
-        "Clear": ["fas", "moon"],
-        "Cloudy": ["fas", "cloud"],
-        "Patchy rain possible": ["fas", "cloud-moon-rain"],
-        "Light rain shower": ["fas", "cloud-moon-rain"],
-        "Moderate or heavy rain shower": ["fas", "cloud-moon-rain"]
+        1003: ["fas", "cloud-moon"],
+        "Ensolarado": ["fas", "sun"],
+        1000: ["fas", "sun"],
+        1006: ["fas", "cloud"],
+        "Possibilidade de chuva isolada": ["fas", "cloud-moon-rain"],
+        1063: ["fas", "cloud-sun-rain"],
+        1240: ["fas", "cloud-rain"],
+        1243: ["fas", "cloud-rain"],
+        "Pancadas de chuva leve": ["fas", "cloud-rain"],
+        "Pancadas de chuva moderada ou forte": ["fas", "cloud-moon-rain"]
       };
 
       if (condition in iconMap) {
