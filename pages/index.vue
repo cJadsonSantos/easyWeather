@@ -19,7 +19,7 @@
       <input
         type="text"
         v-model="city"
-        placeholder="Search City.."
+        placeholder="Buscar Cidade..."
         class="mt-4 w-80 px-8 py-2 border border-none rounded-full bg-[#0E1A2A] text-[#F3F3F3]"
         @input="searchWeather"
       />
@@ -125,18 +125,20 @@ export default {
 
 
     async searchWeather() {
-      await axios
-        .get(`${this.weatherBaseRoute}/forecast.json`, {
-          params: {
-            key: this.weatherKey,
-            q: `${this.city}`
-          }
-        })
+      if (!this.city) {
+        await this.getCurrentLocation();
+      }
+      await axios.get(`${this.weatherBaseRoute}/forecast.json`, {
+        params: {
+          key: this.weatherKey,
+          q: `${this.city}`
+        }
+      })
         .then((response) => {
           this.weather.city = response.data.location.name;
           this.weather.condition = response.data.current.condition.text;
           this.weather.temp_c = response.data.current.temp_c;
-        }).then(()=>{
+        }).then(() => {
           this.updateWeather();
         });
     },
