@@ -33,7 +33,7 @@
         <div class="flex overflow-x-auto">
           <template v-for="day in forecastDays[countDays].hour" :key="day.id">
             <div class="flex flex-col items-center justify-center ml-4">
-              <font-awesome-icon :icon="getIcon(day.condition.code)" class="text-1xl" fade />
+              <font-awesome-icon :icon="getIcon(day.condition.code,day.condition.icon)" class="text-1xl" fade />
               <div class="text-left text-xs">
                 <p>{{ day.time.slice(11, 16) }}</p>
                 <p>{{ `${day.temp_c}º` }}</p>
@@ -77,7 +77,7 @@ export default {
       countDays: 0,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "fa7bc4d2ddaa405188623903231306"
+      weatherKey: "fa717ecfdc814ba7928232204231306"
     };
   },
   created() {
@@ -103,7 +103,7 @@ export default {
           params: {
             key: this.weatherKey,
             q: `${latitude}, ${longitude}`,
-            days: 4,
+            days: 60,
             lang: "pt"
           }
         })
@@ -118,10 +118,8 @@ export default {
 
             this.forecastDays = response.data.forecast.forecastday;
 
-            if (response.data.current.condition) {
-              if (response.data.current.condition.code) {
-                this.iconWeather = this.getIcon(response.data.current.condition.code);
-              }
+            if (response.data.current.condition.code) {
+              this.iconWeather = this.getIcon(response.data.current.condition.code, response.data.current.condition.icon);
             }
           });
       } catch (error) {
@@ -170,8 +168,7 @@ export default {
 
           if (response.data.current.condition) {
             if (response.data.current.condition.code) {
-              this.iconWeather = this.getIcon(response.data.current.condition.code);
-              console.log(this.iconWeather);
+              this.iconWeather = this.getIcon(response.data.current.condition.code, response.data.current.condition.icon);
             }
           }
         });
@@ -188,24 +185,32 @@ export default {
       this.currentDate = `${day}/${month}/${year}`;
     },
 
-    getIcon(condition) {
+    getIcon(code, icon) {
+      if (icon.includes("day")) {
+        let codeDay = code += "day";
+      }
       const iconMap = {
         1003: ["fas", "cloud-moon"],
-        "Ensolarado": ["fas", "sun"],
+        "1003day": ["fas", "cloud-sun"],
         1000: ["fas", "moon"],
         1006: ["fas", "cloud"],
-        "Possibilidade de chuva isolada": ["fas", "cloud-moon-rain"],
-        1063: ["fas", "cloud-sun-rain"],
+        1063: ["fas", "cloud-moon-rain"],
+        "1063day": ["fas", "cloud-sun-rain"],
         1240: ["fas", "cloud-rain"],
-        1243: ["fas", "cloud-rain"],
-        "Pancadas de chuva leve": ["fas", "cloud-rain"],
-        "Pancadas de chuva moderada ou forte": ["fas", "cloud-moon-rain"]
+        "1240day": ["fas", "cloud-sun-rain"],
+        "1243day": ["fas", "cloud-sun-rain"],
+        1243: ["fas", "cloud-moon-rain"],
+        "1246day": ["fas", "cloud-sun-rain"],
+        "1009day": ["fas", "water"],
+        1009: ["fas", "water"],
+        1183: ["fas", "cloud-rain"],
+        "1183day": ["fas", "cloud-rain"]
       };
 
-      if (condition in iconMap) {
-        return iconMap[condition];
+      if (code in iconMap) {
+        return iconMap[code];
       } else {
-        console.log("error:", condition);
+        // console.log("error:", code);
       }
     },
 
