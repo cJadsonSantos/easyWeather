@@ -63,7 +63,6 @@ export default {
       show: false,
       weather: {},
       forecastDays: {},
-      forecastDates: {},
 
       city: null,
       currentDate: null,
@@ -72,7 +71,7 @@ export default {
       countDays: 0,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "f0b8565c541c467ba3511121231306"
+      weatherKey: "2e2ca72a3df04de785320752231306"
     };
   },
   created() {
@@ -94,22 +93,19 @@ export default {
 
     async getWeather(latitude, longitude) {
       try {
-        await axios
-          .get(`${this.weatherBaseRoute}/forecast.json`, {
-            params: {
-              key: this.weatherKey,
-              q: `${latitude}, ${longitude}`,
-              days: 4,
-              lang: "pt"
-            }
-          })
+        await axios.get(`${this.weatherBaseRoute}/forecast.json`, {
+          params: {
+            key: this.weatherKey,
+            q: `${latitude}, ${longitude}`,
+            days: 4,
+            lang: "pt"
+          }
+        })
           .then((response) => {
             this.weather.city = response.data.location.name;
             this.weather.condition = response.data.current.condition.text;
             this.weather.temp_c = response.data.current.temp_c;
             this.show = true;
-
-            this.forecastDates = response.data.forecast;
 
             this.forecastDays = response.data.forecast.forecastday;
 
@@ -158,7 +154,6 @@ export default {
           this.weather.condition = response.data.current.condition.text;
           this.weather.temp_c = response.data.current.temp_c;
 
-          this.forecastDates = response.data.forecast;
           this.forecastDays = response.data.forecast.forecastday;
 
           if (response.data.current.condition) {
@@ -204,11 +199,10 @@ export default {
 
     changeDate(days) {
       this.countDays += days;
-
       if (this.countDays < 0) {
         this.countDays = 0;
-      } else if (this.countDays >= this.forecastDates.length) {
-        this.countDays = this.forecastDates.length - 1;
+      } else if (this.countDays >= this.forecastDays.length) {
+        this.countDays = this.forecastDays.length - 1;
       }
     },
     formatDateBrazilian(date) {
