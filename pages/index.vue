@@ -104,7 +104,6 @@ export default {
             key: this.weatherKey,
             q: `${latitude}, ${longitude}`,
             days: 4,
-            aqi: "yes",
             lang: "pt"
           }
         })
