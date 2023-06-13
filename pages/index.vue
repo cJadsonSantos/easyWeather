@@ -72,7 +72,7 @@ export default {
       countDays: 0,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "630f2a2047b8460689902930231306"
+      weatherKey: "f0b8565c541c467ba3511121231306"
     };
   },
   created() {
@@ -114,7 +114,6 @@ export default {
             this.forecastDays = response.data.forecast.forecastday;
 
             if (response.data.current.condition) {
-              console.log(response.data.current.condition);
               this.iconWeather = "cloud-moon";
             }
           });
@@ -197,7 +196,7 @@ export default {
       if (condition in iconMap) {
         return iconMap[condition];
       } else {
-        console.log("Unknown weather condition:", condition);
+        console.log("error:", condition);
       }
     },
 
