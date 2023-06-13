@@ -4,7 +4,7 @@
     <div class="flex flex-col items-center justify-center">
 
       <div class="text-center mt-12 items-center space-y-12">
-        <font-awesome-icon :icon="['fas',iconWeather]" class="text-7xl" bounce />
+        <font-awesome-icon :icon="iconWeather" class="text-7xl" bounce />
         <p class="text-4xl font-bold">{{ weather.city }}</p>
         <template v-for="day in this.forecastDates">
           {{ formatDateBrazilian(day[countDays].date) }}
@@ -114,7 +114,9 @@ export default {
             this.forecastDays = response.data.forecast.forecastday;
 
             if (response.data.current.condition) {
-              this.iconWeather = "cloud-moon";
+              if (response.data.current.condition.code) {
+                this.iconWeather = this.getIcon(response.data.current.condition.code);
+              }
             }
           });
       } catch (error) {
