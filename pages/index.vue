@@ -99,7 +99,7 @@ export default {
             params: {
               key: this.weatherKey,
               q: `${latitude}, ${longitude}`,
-              days: 3,
+              days: 4,
               lang: "pt"
             }
           })
@@ -149,7 +149,7 @@ export default {
           params: {
             key: this.weatherKey,
             q: this.city,
-            days: 3,
+            days: 4,
             lang: "pt"
           }
         }).then((response) => {
@@ -161,7 +161,10 @@ export default {
           this.forecastDays = response.data.forecast.forecastday;
 
           if (response.data.current.condition) {
-            this.iconWeather = "cloud-moon";
+            if (response.data.current.condition.code) {
+              this.iconWeather = this.getIcon(response.data.current.condition.code);
+              console.log(this.iconWeather);
+            }
           }
         });
       } catch (error) {
