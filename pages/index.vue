@@ -7,7 +7,7 @@
         <font-awesome-icon :icon="['fas',iconWeather]" class="text-7xl" bounce />
         <p class="text-4xl font-bold">{{ weather.city }}</p>
         <template v-for="day in this.forecastDates">
-          {{ day[countDays].date }}
+          {{ formatDateBrazilian(day[countDays].date) }}
         </template>
       </div>
 
@@ -28,7 +28,6 @@
           <template v-for="day in forecastDays[countDays].hour" :key="day.id">
             <div class="flex flex-col items-center justify-center ml-4">
               <font-awesome-icon :icon="getIcon(day.condition.code)" class="text-1xl" fade />
-
               <div class="text-left text-xs">
                 <p>{{ day.time.slice(11, 16) }}</p>
                 <p>{{ `${day.temp_c}º` }}</p>
@@ -42,10 +41,10 @@
     <div class="flex justify-center mt-8 space-x-8 text-sm font-bold">
       <span @click="changeDate(-1)" class="cursor-pointer flex items-center justify-center">
         <font-awesome-icon :icon="['fas','caret-left']" class="text-2xl mr-2" beat />
-        Previous Day
+        Dia Anterior
       </span>
       <span @click="changeDate(1)" class="cursor-pointer flex items-center justify-center">
-        Next Day
+        Próximo Dia
         <font-awesome-icon :icon="['fas','caret-right']" class="text-2xl ml-2" beat />
       </span>
     </div>
@@ -73,7 +72,7 @@ export default {
       countDays: 0,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "953c9a5eae1041bca6b195920230806"
+      weatherKey: "630f2a2047b8460689902930231306"
     };
   },
   created() {
@@ -111,11 +110,11 @@ export default {
             this.show = true;
 
             this.forecastDates = response.data.forecast;
-            console.log(response.data.forecast);
 
             this.forecastDays = response.data.forecast.forecastday;
 
             if (response.data.current.condition) {
+              console.log(response.data.current.condition);
               this.iconWeather = "cloud-moon";
             }
           });
@@ -123,6 +122,7 @@ export default {
         console.error(error);
       }
     },
+
 
     async searchWeather() {
       await axios
@@ -136,8 +136,35 @@ export default {
           this.weather.city = response.data.location.name;
           this.weather.condition = response.data.current.condition.text;
           this.weather.temp_c = response.data.current.temp_c;
-          // this.forecastDays = response.data.forecast.forecastday;
+        }).then(()=>{
+          this.updateWeather();
         });
+    },
+
+    async updateWeather() {
+      try {
+        await axios.get(`${this.weatherBaseRoute}/forecast.json`, {
+          params: {
+            key: this.weatherKey,
+            q: this.city,
+            days: 3,
+            lang: "pt"
+          }
+        }).then((response) => {
+          this.weather.city = response.data.location.name;
+          this.weather.condition = response.data.current.condition.text;
+          this.weather.temp_c = response.data.current.temp_c;
+
+          this.forecastDates = response.data.forecast;
+          this.forecastDays = response.data.forecast.forecastday;
+
+          if (response.data.current.condition) {
+            this.iconWeather = "cloud-moon";
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
 
     getCurrentDate() {
@@ -152,7 +179,7 @@ export default {
       const iconMap = {
         1003: ["fas", "cloud-moon"],
         "Ensolarado": ["fas", "sun"],
-        1000: ["fas", "sun"],
+        1000: ["fas", "moon"],
         1006: ["fas", "cloud"],
         "Possibilidade de chuva isolada": ["fas", "cloud-moon-rain"],
         1063: ["fas", "cloud-sun-rain"],
@@ -174,9 +201,13 @@ export default {
 
       if (this.countDays < 0) {
         this.countDays = 0;
-      } else if (this.countDays >= this.forecastDays.length) {
-        this.countDays = this.forecastDays.length - 1;
+      } else if (this.countDays >= this.forecastDates.length) {
+        this.countDays = this.forecastDates.length - 1;
       }
+    },
+    formatDateBrazilian(date) {
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
     }
   }
 };
