@@ -6,12 +6,17 @@
       <div class="text-center mt-12 items-center space-y-12">
         <font-awesome-icon :icon="iconWeather" class="text-7xl" bounce />
         <p class="text-4xl font-bold">{{ weather.city }}</p>
-        <template v-for="day in this.forecastDates">
-          {{ formatDateBrazilian(day[countDays].date) }}
-        </template>
+        {{ formatDateBrazilian(forecastDays[countDays].date) }}
       </div>
 
       <div class="text-center space-y-2 mt-4">
+        <p class="flex flex-col justify-center">
+          <span>Vento</span>
+          {{ weather.wind_dir }}
+        </p>
+        <p class="flex flex-col justify-center">
+          {{ weather.wind_kph }}
+        </p>
         <p class="text-5xl font-bold">{{ `${weather.temp_c}º` }}</p>
         <p class="text-2xl text-gray-400">{{ weather.condition }}</p>
       </div>
@@ -71,7 +76,7 @@ export default {
       countDays: 0,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "2e2ca72a3df04de785320752231306"
+      weatherKey: "fa7bc4d2ddaa405188623903231306"
     };
   },
   created() {
@@ -105,6 +110,9 @@ export default {
             this.weather.city = response.data.location.name;
             this.weather.condition = response.data.current.condition.text;
             this.weather.temp_c = response.data.current.temp_c;
+            this.weather.wind_kph = response.data.current.wind_kph;
+            this.weather.wind_dir = response.data.current.wind_dir;
+            console.log(response.data.current);
             this.show = true;
 
             this.forecastDays = response.data.forecast.forecastday;
@@ -135,6 +143,8 @@ export default {
           this.weather.city = response.data.location.name;
           this.weather.condition = response.data.current.condition.text;
           this.weather.temp_c = response.data.current.temp_c;
+          this.weather.wind_kph = response.data.current.wind_kph;
+          this.weather.wind_dir = response.data.current.wind_dir;
         }).then(() => {
           this.updateWeather();
         });
