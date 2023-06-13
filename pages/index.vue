@@ -9,14 +9,15 @@
         {{ formatDateBrazilian(forecastDays[countDays].date) }}
       </div>
 
-      <div class="text-center space-y-2 mt-4">
-        <p class="flex flex-col justify-center">
-          <span>Vento</span>
+      <div class="text-center space-y-4 mt-4">
+        <span class="flex flex-col justify-center">
+          <font-awesome-icon :icon="['fas','wind']" class="text-2xl" fade />
           {{ weather.wind_dir }}
-        </p>
-        <p class="flex flex-col justify-center">
-          {{ weather.wind_kph }}
-        </p>
+        </span>
+        <span class="flex flex-col justify-center">
+          <font-awesome-icon :icon="['fas','bolt']" class="text-2xl" fade />
+          {{ weather.wind_kph }} km/h
+        </span>
         <p class="text-5xl font-bold">{{ `${weather.temp_c}º` }}</p>
         <p class="text-2xl text-gray-400">{{ weather.condition }}</p>
       </div>
@@ -103,6 +104,7 @@ export default {
             key: this.weatherKey,
             q: `${latitude}, ${longitude}`,
             days: 4,
+            aqi: "yes",
             lang: "pt"
           }
         })
@@ -157,6 +159,7 @@ export default {
             key: this.weatherKey,
             q: this.city,
             days: 4,
+            aqi: "yes",
             lang: "pt"
           }
         }).then((response) => {
