@@ -2,6 +2,7 @@
   <div v-if="show"
        :class="gradientClass"
        class="flex flex-col h-screen w-screen min-h-screen text-[#F3F3F3] overflow-scroll sm:h-screen">
+
     <div class="flex flex-col items-center justify-center">
 
       <div class="text-center mt-12 items-center space-y-10">
@@ -87,7 +88,7 @@ export default {
       isDaytime: false,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "c7c820e5f63049168c635450231406 "
+      weatherKey: "d591d4770b4e4b80ac1232021231406  "
     };
   },
   created() {
@@ -235,6 +236,8 @@ export default {
       } else if (this.countDays >= this.forecastDays.length) {
         this.countDays = this.forecastDays.length - 1;
       }
+
+
     },
     formatDateBrazilian(date) {
       const daysOfWeek = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
