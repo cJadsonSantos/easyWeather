@@ -244,9 +244,25 @@ export default {
       }
     },
     formatDateBrazilian(date) {
+      const daysOfWeek = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+
       const [year, month, day] = date.split("-");
-      return `${day}/${month}/${year}`;
+      const formattedDate = new Date(year, month - 1, day);
+      const currentDate = new Date();
+
+      if (
+        formattedDate.getDate() === currentDate.getDate() &&
+        formattedDate.getMonth() === currentDate.getMonth() &&
+        formattedDate.getFullYear() === currentDate.getFullYear()
+      ) {
+        return "Hoje";
+      }
+
+      const dayOfWeek = formattedDate.getDay();
+
+      return `${daysOfWeek[dayOfWeek]}`;
     },
+
 
     toggleDaytime() {
       this.isDaytime = !this.isDaytime;
