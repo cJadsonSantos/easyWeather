@@ -24,7 +24,8 @@ export default defineNuxtConfig({
 
   buildModules: [
     "@nuxtjs/eslint-module",
-    "@nuxtjs/fontawesome"
+    "@nuxtjs/fontawesome",
+    '@nuxtjs/google-fonts',
   ],
   tailwindcss: {
     darkMode: "class"
