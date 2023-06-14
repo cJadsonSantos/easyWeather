@@ -243,13 +243,6 @@ export default {
       } else if (this.countDays >= this.forecastDays.length) {
         this.countDays = this.forecastDays.length - 1;
       }
-
-      // const currentCondition = this.forecastDays[this.countDays].day.condition;
-      // if (currentCondition.code) {
-      //   console.log(currentCondition.code);
-      //   console.log(currentCondition.icon);
-      //   this.iconWeather = this.getIcon(currentCondition.code, currentCondition.icon);
-      // }
     },
     formatDateBrazilian(date) {
       const daysOfWeek = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
