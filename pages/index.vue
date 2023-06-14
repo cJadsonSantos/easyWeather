@@ -35,6 +35,8 @@
             <div class="flex flex-col items-center justify-center ml-4">
               <font-awesome-icon :icon="getIcon(day.condition.code,day.condition.icon)" class="text-1xl" fade />
               <div class="text-left text-xs">
+                {{day.condition.code}}
+                {{day.condition.icon}}
                 <p>{{ day.time.slice(11, 16) }}</p>
                 <p>{{ `${day.temp_c}º` }}</p>
               </div>
@@ -139,6 +141,7 @@ export default {
         }
       })
         .then((response) => {
+          this.iconWeather = this.getIcon(response.data.current.condition.code, response.data.current.condition.icon);
           this.weather.city = response.data.location.name;
           this.weather.condition = response.data.current.condition.text;
           this.weather.temp_c = response.data.current.temp_c;
@@ -193,7 +196,9 @@ export default {
         1003: ["fas", "cloud-moon"],
         "1003day": ["fas", "cloud-sun"],
         1000: ["fas", "moon"],
+        '1000day': ["fas", "sun"],
         1006: ["fas", "cloud"],
+        '1006day': ["fas", "cloud"],
         1063: ["fas", "cloud-moon-rain"],
         "1063day": ["fas", "cloud-sun-rain"],
         1240: ["fas", "cloud-rain"],
@@ -201,10 +206,14 @@ export default {
         "1243day": ["fas", "cloud-sun-rain"],
         1243: ["fas", "cloud-moon-rain"],
         "1246day": ["fas", "cloud-sun-rain"],
-        "1009day": ["fas", "water"],
         1009: ["fas", "water"],
+        "1009day": ["fas", "water"],
         1183: ["fas", "cloud-rain"],
-        "1183day": ["fas", "cloud-rain"]
+        "1183day": ["fas", "cloud-rain"],
+        1153: ["fas", "cloud-rain"],
+        '1153day': ["fas", "cloud-rain"],
+        1030: ["fas", "smog"],
+        '1030day': ["fas", "smog"]
       };
 
       if (code in iconMap) {
