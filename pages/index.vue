@@ -44,7 +44,6 @@
             <div class="flex flex-col items-center justify-center ml-4">
               <font-awesome-icon :icon="getIcon(day.condition.code,day.condition.icon)" class="text-1xl" fade />
               <div class="text-left text-xs">
-                {{ day.condition.code }}
                 <p>{{ day.time.slice(11, 16) }}</p>
                 <p>{{ `${day.temp_c}º` }}</p>
               </div>
