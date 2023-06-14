@@ -12,9 +12,9 @@
     </div>
     <div class="flex flex-col items-center justify-center">
 
-      <div class="text-center mt-12 items-center space-y-12">
+      <div class="text-center mt-12 items-center space-y-10">
         <font-awesome-icon :icon="iconWeather" class="text-7xl" bounce />
-        <p class="text-4xl font-bold font-roboto">{{ weather.city }}</p>
+        <p class="text-4xl font-bold">{{ weather.city }}</p>
         {{ formatDateBrazilian(forecastDays[countDays].date) }}
       </div>
 
@@ -95,7 +95,7 @@ export default {
       isDaytime: undefined,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "8d41f80226084fec82f21500231406"
+      weatherKey: "524e7eb3774d4330af423011231406"
     };
   },
   created() {
@@ -254,8 +254,3 @@ export default {
   }
 };
 </script>
-<style>
-.font-roboto {
-    font-family: 'Roboto', sans-serif !important;
-}
-</style>
