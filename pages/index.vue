@@ -4,7 +4,7 @@
        class="flex flex-col h-screen w-screen min-h-screen text-[#F3F3F3] overflow-scroll sm:h-screen">
     <div class="absolute top-4 right-4">
       <font-awesome-icon
-        :icon="['fas','moon']"
+        :icon="['fas', isDaytime ? 'sun' : 'moon']"
         class="text-white text-2xl cursor-pointer"
         @click="toggleDaytime"
       />
@@ -94,7 +94,7 @@ export default {
       isDaytime: undefined,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "fa717ecfdc814ba7928232204231306"
+      weatherKey: "4d0f49c88fe140099f704020231406"
     };
   },
   created() {
