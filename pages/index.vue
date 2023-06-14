@@ -1,7 +1,7 @@
 <template>
   <div v-if="show"
        :class="gradientClass"
-       class="flex flex-col h-screen w-screen min-h-screen text-[#F3F3F3] overflow-scroll sm:h-screen">
+       class="flex flex-col h-screen w-screen min-h-screen text-[#F3F3F3] overflow-scroll lg:h-screen lg:w-screen sm:h-screen sm:w-screen">
     <div class="absolute top-4 right-4">
       <font-awesome-icon
         :icon="['fas', isDaytime ? 'sun' : 'moon']"
@@ -44,6 +44,7 @@
             <div class="flex flex-col items-center justify-center ml-4">
               <font-awesome-icon :icon="getIcon(day.condition.code,day.condition.icon)" class="text-1xl" fade />
               <div class="text-left text-xs">
+                {{ day.condition.code }}
                 <p>{{ day.time.slice(11, 16) }}</p>
                 <p>{{ `${day.temp_c}º` }}</p>
               </div>
@@ -53,15 +54,15 @@
       </div>
     </div>
 
-    <div class="flex justify-center mt-8 space-x-8 text-sm font-bold">
-      <span @click="changeDate(-1)" class="cursor-pointer flex items-center justify-center">
+    <div class="flex justify-center mt-12 space-x-8 text-sm font-bold">
+      <button @click="changeDate(-1)" class="cursor-pointer flex items-center justify-center">
         <font-awesome-icon :icon="['fas','caret-left']" class="text-2xl mr-2" beat />
         Dia Anterior
-      </span>
-      <span @click="changeDate(1)" class="cursor-pointer flex items-center justify-center">
+      </button>
+      <button @click="changeDate(1)" class="cursor-pointer flex items-center justify-center">
         Próximo Dia
         <font-awesome-icon :icon="['fas','caret-right']" class="text-2xl ml-2" beat />
-      </span>
+      </button>
     </div>
   </div>
 </template>
@@ -114,7 +115,6 @@ export default {
       }
     },
 
-
     async getWeather(latitude, longitude) {
       try {
         await axios.get(`${this.weatherBaseRoute}/forecast.json`, {
@@ -124,26 +124,24 @@ export default {
             days: 4,
             lang: "pt"
           }
-        })
-          .then((response) => {
-            this.weather.city = response.data.location.name;
-            this.weather.condition = response.data.current.condition.text;
-            this.weather.temp_c = response.data.current.temp_c;
-            this.weather.wind_kph = response.data.current.wind_kph;
-            this.weather.wind_dir = response.data.current.wind_dir;
-            this.show = true;
+        }).then((response) => {
+          this.weather.city = response.data.location.name;
+          this.weather.condition = response.data.current.condition.text;
+          this.weather.temp_c = response.data.current.temp_c;
+          this.weather.wind_kph = response.data.current.wind_kph;
+          this.weather.wind_dir = response.data.current.wind_dir;
+          this.show = true;
 
-            this.forecastDays = response.data.forecast.forecastday;
+          this.forecastDays = response.data.forecast.forecastday;
 
-            if (response.data.current.condition.code) {
-              this.iconWeather = this.getIcon(response.data.current.condition.code, response.data.current.condition.icon);
-            }
-          });
+          if (response.data.current.condition.code) {
+            this.iconWeather = this.getIcon(response.data.current.condition.code, response.data.current.condition.icon);
+          }
+        });
       } catch (error) {
         console.error(error);
       }
     },
-
 
     async searchWeather() {
       if (!this.city) {
@@ -205,7 +203,7 @@ export default {
 
     getIcon(code, icon) {
       if (icon.includes("day")) {
-        let codeDay = code += "day";
+        code += "day";
       }
       const iconMap = {
         1003: ["fas", "cloud-moon"],
