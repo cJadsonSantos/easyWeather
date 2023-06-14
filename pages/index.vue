@@ -7,6 +7,7 @@
         :icon="['fas', isDaytime ? 'sun' : 'moon']"
         class="text-white text-2xl cursor-pointer"
         @click="toggleDaytime"
+        beat
       />
     </div>
     <div class="flex flex-col items-center justify-center">
