@@ -95,7 +95,7 @@ export default {
       isDaytime: undefined,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "4d0f49c88fe140099f704020231406"
+      weatherKey: "bb719953951542c391015456231406"
     };
   },
   created() {
