@@ -77,7 +77,7 @@ export default {
     gradientClass() {
       const now = new Date();
       const hour = now.getHours();
-      return hour < 18 || this.isDaytime ? "bg-gradient-to-r from-[#E95D55] to-[#ED693D]" : "bg-gradient-to-r from-[#21394F] to-[#0E1A2A]";
+      return hour >= 6 && hour < 18 || this.isDaytime ? "bg-gradient-to-r from-[#E95D55] to-[#ED693D]" : "bg-gradient-to-r from-[#21394F] to-[#0E1A2A]";
     }
   },
   data() {
@@ -92,10 +92,10 @@ export default {
 
       countDays: 0,
 
-      isDaytime: undefined,
+      isDaytime: false,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "524e7eb3774d4330af423011231406"
+      weatherKey: "62794cc6c8954659a3b34834231406 "
     };
   },
   created() {
@@ -206,6 +206,7 @@ export default {
       }
       const iconMap = {
         1003: ["fas", "cloud-moon"],
+        "1195day": ["fas", "cloud-showers-heavy"],
         "1003day": ["fas", "cloud-sun"],
         1000: ["fas", "moon"],
         "1000day": ["fas", "sun"],
@@ -241,6 +242,13 @@ export default {
         this.countDays = 0;
       } else if (this.countDays >= this.forecastDays.length) {
         this.countDays = this.forecastDays.length - 1;
+      }
+
+      const currentCondition = this.forecastDays[this.countDays].day.condition;
+      if (currentCondition.code) {
+        console.log(currentCondition.code);
+        console.log(currentCondition.icon);
+        this.iconWeather = this.getIcon(currentCondition.code, currentCondition.icon);
       }
     },
     formatDateBrazilian(date) {
