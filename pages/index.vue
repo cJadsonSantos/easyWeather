@@ -2,14 +2,6 @@
   <div v-if="show"
        :class="gradientClass"
        class="flex flex-col h-screen w-screen min-h-screen text-[#F3F3F3] overflow-scroll sm:h-screen">
-        <!--<div class="absolute top-4 right-4">-->
-        <!--  <font-awesome-icon-->
-        <!--    :icon="['fas', isDaytime ? 'sun' : 'moon']"-->
-        <!--    class="text-white text-2xl cursor-pointer"-->
-        <!--    @click="toggleDaytime"-->
-        <!--    beat-->
-        <!--  />-->
-        <!--</div>-->
     <div class="flex flex-col items-center justify-center">
 
       <div class="text-center mt-12 items-center space-y-10">
