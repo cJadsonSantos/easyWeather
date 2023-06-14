@@ -2,6 +2,13 @@
   <div v-if="show"
        :class="gradientClass"
        class="flex flex-col h-screen w-screen min-h-screen text-[#F3F3F3] overflow-scroll sm:h-screen">
+    <div class="absolute top-4 right-4">
+      <font-awesome-icon
+        :icon="['fas','moon']"
+        class="text-white text-2xl cursor-pointer"
+        @click="toggleDaytime"
+      />
+    </div>
     <div class="flex flex-col items-center justify-center">
 
       <div class="text-center mt-12 items-center space-y-12">
@@ -69,7 +76,7 @@ export default {
     gradientClass() {
       const now = new Date();
       const hour = now.getHours();
-      return hour < 12 ? "bg-gradient-to-r from-[#E95D55] to-[#ED693D]" : "bg-gradient-to-r from-[#21394F] to-[#0E1A2A]";
+      return hour < 18 || this.isDaytime ? "bg-gradient-to-r from-[#E95D55] to-[#ED693D]" : "bg-gradient-to-r from-[#21394F] to-[#0E1A2A]";
     }
   },
   data() {
@@ -83,6 +90,8 @@ export default {
       iconWeather: null,
 
       countDays: 0,
+
+      isDaytime: undefined,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
       weatherKey: "fa717ecfdc814ba7928232204231306"
@@ -121,7 +130,6 @@ export default {
             this.weather.temp_c = response.data.current.temp_c;
             this.weather.wind_kph = response.data.current.wind_kph;
             this.weather.wind_dir = response.data.current.wind_dir;
-            console.log(response.data.current);
             this.show = true;
 
             this.forecastDays = response.data.forecast.forecastday;
@@ -240,6 +248,10 @@ export default {
     formatDateBrazilian(date) {
       const [year, month, day] = date.split("-");
       return `${day}/${month}/${year}`;
+    },
+
+    toggleDaytime() {
+      this.isDaytime = !this.isDaytime;
     }
   }
 };
