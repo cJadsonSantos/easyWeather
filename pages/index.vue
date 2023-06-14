@@ -1,6 +1,7 @@
 <template>
   <div v-if="show"
-       class="flex flex-col h-screen w-screen min-h-screen bg-gradient-to-r from-[#0E1A2A] to-[#21394F] text-[#F3F3F3] overflow-scroll sm:h-screen">
+       :class="gradientClass"
+       class="flex flex-col h-screen w-screen min-h-screen text-[#F3F3F3] overflow-scroll sm:h-screen">
     <div class="flex flex-col items-center justify-center">
 
       <div class="text-center mt-12 items-center space-y-12">
@@ -19,14 +20,14 @@
           {{ weather.wind_kph }} km/h
         </span>
         <p class="text-5xl font-bold">{{ `${weather.temp_c}º` }}</p>
-        <p class="text-2xl text-gray-400">{{ weather.condition }}</p>
+        <p class="text-2xl text-gray-300">{{ weather.condition }}</p>
       </div>
 
       <input
         type="text"
         v-model="city"
         placeholder="Buscar Cidade..."
-        class="mt-4 w-80 px-8 py-2 border border-none rounded-full bg-[#0E1A2A] text-[#F3F3F3]"
+        class="mt-4 w-80 px-8 py-2 border border-none rounded-full bg-[#0E1A2A] text-[#F3F3F3] bg-opacity-90"
         @input="searchWeather"
       />
       <div class="flex flex-wrap max-w-full px-8 mt-8">
@@ -35,8 +36,6 @@
             <div class="flex flex-col items-center justify-center ml-4">
               <font-awesome-icon :icon="getIcon(day.condition.code,day.condition.icon)" class="text-1xl" fade />
               <div class="text-left text-xs">
-                {{day.condition.code}}
-                {{day.condition.icon}}
                 <p>{{ day.time.slice(11, 16) }}</p>
                 <p>{{ `${day.temp_c}º` }}</p>
               </div>
@@ -66,6 +65,13 @@ import axios from "axios";
 export default {
   name: "index",
   components: { FontAwesomeIcon },
+  computed: {
+    gradientClass() {
+      const now = new Date();
+      const hour = now.getHours();
+      return hour < 12 ? "bg-gradient-to-r from-[#E95D55] to-[#ED693D]" : "bg-gradient-to-r from-[#21394F] to-[#0E1A2A]";
+    }
+  },
   data() {
     return {
       show: false,
@@ -105,7 +111,7 @@ export default {
           params: {
             key: this.weatherKey,
             q: `${latitude}, ${longitude}`,
-            days: 60,
+            days: 4,
             lang: "pt"
           }
         })
@@ -196,9 +202,9 @@ export default {
         1003: ["fas", "cloud-moon"],
         "1003day": ["fas", "cloud-sun"],
         1000: ["fas", "moon"],
-        '1000day': ["fas", "sun"],
+        "1000day": ["fas", "sun"],
         1006: ["fas", "cloud"],
-        '1006day': ["fas", "cloud"],
+        "1006day": ["fas", "cloud"],
         1063: ["fas", "cloud-moon-rain"],
         "1063day": ["fas", "cloud-sun-rain"],
         1240: ["fas", "cloud-rain"],
@@ -211,9 +217,9 @@ export default {
         1183: ["fas", "cloud-rain"],
         "1183day": ["fas", "cloud-rain"],
         1153: ["fas", "cloud-rain"],
-        '1153day': ["fas", "cloud-rain"],
+        "1153day": ["fas", "cloud-rain"],
         1030: ["fas", "smog"],
-        '1030day': ["fas", "smog"]
+        "1030day": ["fas", "smog"]
       };
 
       if (code in iconMap) {
