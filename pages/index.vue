@@ -88,7 +88,7 @@ export default {
       isDaytime: false,
 
       weatherBaseRoute: "https://api.weatherapi.com/v1",
-      weatherKey: "b1accf866d594e318e4235636231806"
+      weatherKey: "0d81668b5e9d42b29de123829232506"
     };
   },
   created() {
@@ -97,6 +97,22 @@ export default {
   },
   methods: {
     async getCurrentLocation() {
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        await this.getWeather(latitude, longitude);
+      } catch (error) {
+        await this.getCurrentLocationWithIp();
+        console.error("Permissão não concedida:", error);
+      }
+    },
+
+    async getCurrentLocationWithIp() {
       try {
         const response = await axios.get("https://ipapi.co/json/");
         const { latitude, longitude } = response.data;
