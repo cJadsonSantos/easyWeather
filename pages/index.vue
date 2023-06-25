@@ -1,7 +1,7 @@
 <template>
   <div v-if="show"
        :class="gradientClass"
-       class="flex flex-col h-screen w-screen min-h-screen text-[#F3F3F3] overflow-scroll sm:h-screen">
+       class="flex flex-col h-screen w-screen min-h-screen text-[#F3F3F3] overflow-hidden sm:h-screen">
 
     <div class="flex flex-col items-center justify-center">
 
